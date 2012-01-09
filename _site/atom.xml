@@ -3,7 +3,7 @@
  <title>com.anideo.dev</title>
  <link href="http://dev.anideo.com/atom.html" rel="self"/>
  <link href="http://dev.anideo.com/"/>
- <updated>2012-01-09T18:03:02+08:00</updated>
+ <updated>2012-01-09T18:24:17+08:00</updated>
  <id>http://dev.anideo.com/</id>
  <author>
    <name>The Anideo Developer Team</name>
@@ -20,7 +20,7 @@
 
 &lt;p class=&quot;meta&quot;&gt;03 Jan 2012 - Singapore&lt;/p&gt;
 
-&lt;p&gt;As was mentioned in our &lt;a href=&quot;http://dev.anideo.com/post/15021361987/how-moving-to-amazon-cloudfront-increased-our-app-store&quot;&gt;previous post&lt;/a&gt;, we recently started using Amazon Cloudfront for our CDN needs. We wanted the performance benefits that we would gain from the move, we certainly didn&amp;#8217;t want it to come at the cost of speed of deployment.&lt;/p&gt;
+&lt;p&gt;As was mentioned in our &lt;a href=&quot;http://dev.anideo.com/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html&quot;&gt;previous post&lt;/a&gt;, we recently started using Amazon Cloudfront for our CDN needs. We wanted the performance benefits that we would gain from the move, we certainly didn&amp;#8217;t want it to come at the cost of speed of deployment.&lt;/p&gt;
 
 &lt;p&gt;While the CloudFront custom origin server solution takes care of deployment, there is still the problem of expiring stale assets (especially Javascript and CSS).&lt;/p&gt;
 
