@@ -7,7 +7,7 @@ layout: nil
  <link href="http://dev.anideo.com/atom.html" rel="self"/>
  <link href="http://dev.anideo.com/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://dev.anideo.com</id>
+ <id>http://dev.anideo.com/</id>
  <author>
    <name>The Anideo Developer Team</name>
    <email>dev@anideo.com</email>
@@ -21,8 +21,8 @@ layout: nil
    <id>http://dev.anideo.com{{ post.id }}</id>
    <content type="html">{{ post.content | xml_escape }}</content>
    <author>
-     <name>Arun Thampi</name>
-     <uri>http://dev.anideo.com</uri>
+     <name>Devs at Anideo</name>
+     <uri>http://dev.anideo.com/</uri>
    </author>
  </entry>
  {% endfor %}
