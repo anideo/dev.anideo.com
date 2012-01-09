@@ -3,8 +3,8 @@
  <title>com.anideo.dev</title>
  <link href="http://dev.anideo.com/atom.html" rel="self"/>
  <link href="http://dev.anideo.com/"/>
- <updated>2012-01-09T17:29:23+08:00</updated>
- <id>http://dev.anideo.com</id>
+ <updated>2012-01-09T17:59:53+08:00</updated>
+ <id>http://dev.anideo.com/</id>
  <author>
    <name>The Anideo Developer Team</name>
    <email>dev@anideo.com</email>
@@ -55,8 +55,8 @@
 &lt;p&gt;Our entire application.rb is here for your reference: &lt;a href=&quot;https://gist.github.com/1554090&quot;&gt;&lt;a href=&quot;https://gist.github.com/1554090&quot;&gt;https://gist.github.com/1554090&lt;/a&gt;&lt;/a&gt;.&lt;/p&gt;
 </content>
    <author>
-     <name>Arun Thampi</name>
-     <uri>http://dev.anideo.com</uri>
+     <name>Devs at Anideo</name>
+     <uri>http://dev.anideo.com/</uri>
    </author>
  </entry>
  
@@ -92,8 +92,8 @@ p(meta). 30 Dec 2011 - Singapore
 &lt;p&gt;Our biggest takeway is - run experiments, follow up on performance, try to find out root causes for weaknesses, and ruthlessly tackle them.&lt;/p&gt;
 </content>
    <author>
-     <name>Arun Thampi</name>
-     <uri>http://dev.anideo.com</uri>
+     <name>Devs at Anideo</name>
+     <uri>http://dev.anideo.com/</uri>
    </author>
  </entry>
  
