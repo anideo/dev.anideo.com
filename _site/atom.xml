@@ -3,7 +3,7 @@
  <title>com.anideo.dev</title>
  <link href="http://dev.anideo.com/atom.html" rel="self"/>
  <link href="http://dev.anideo.com/"/>
- <updated>2012-01-09T17:59:53+08:00</updated>
+ <updated>2012-01-09T18:03:02+08:00</updated>
  <id>http://dev.anideo.com/</id>
  <author>
    <name>The Anideo Developer Team</name>
@@ -17,6 +17,8 @@
    <updated>2012-01-03T00:00:00+08:00</updated>
    <id>http://dev.anideo.com/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails</id>
    <content type="html">&lt;h1&gt;&lt;a href=&quot;/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html&quot;&gt;How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p class=&quot;meta&quot;&gt;03 Jan 2012 - Singapore&lt;/p&gt;
 
 &lt;p&gt;As was mentioned in our &lt;a href=&quot;http://dev.anideo.com/post/15021361987/how-moving-to-amazon-cloudfront-increased-our-app-store&quot;&gt;previous post&lt;/a&gt;, we recently started using Amazon Cloudfront for our CDN needs. We wanted the performance benefits that we would gain from the move, we certainly didn&amp;#8217;t want it to come at the cost of speed of deployment.&lt;/p&gt;
 
@@ -67,7 +69,7 @@
    <id>http://dev.anideo.com/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store</id>
    <content type="html">&lt;h1&gt;&lt;a href=&quot;/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html&quot;&gt;How moving to Amazon Cloudfront increased our App Store conversion rate by 250%&lt;/a&gt;&lt;/h1&gt;
 
-p(meta). 30 Dec 2011 - Singapore
+&lt;p class=&quot;meta&quot;&gt;30 Dec 2011 - Singapore&lt;/p&gt;
 
 &lt;p&gt;So as you may know, we&amp;#8217;ve been working on &lt;a href=&quot;http://bit.ly/densoapp&quot;&gt;Denso&lt;/a&gt; for a while now, and our primary source of marketing (after the initial wave of PR via &lt;a href=&quot;http://facebook.com/saverin&quot;&gt;Eduardo&lt;/a&gt;) has been our website. We post interesting videos once in a while to Hacker News, Reddit, Twitter and Facebook, thus generating inbound traffic.&lt;/p&gt;
 
