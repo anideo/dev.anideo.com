@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku</title>
+   <meta name="author" content="Arun Thampi" />
+   <link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+   <link href="/css/default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/css/globals.css" media="screen" rel="stylesheet" type="text/css" />
+   <link rel="alternate" type="application/atom+xml" title="McLovin - Atom" href="http://feeds.feedburner.com/anideo-dev" />
+   <meta name="verify-v1" content="H2MobDzY8glD+MCbudtHDX3ln0Q8MZLhA6Qwvyv2AdE=" />
+</head>
+<body>
+
+<div class="container" id="main">
+  <section id="default">
+    <div class="row">
+      <div class="span4" id="about">
+        <h1><a href="/">The Anideo Dev Blog</a></h1>
+        <ul class="sidebar-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives.html">Archives</a></li>
+          <li><a href="mailto:dev@anideo.com?subject=Hey Devs">Contact</a></li>
+          <li><a href="http://feeds.feedburner.com/anideo-dev">Feed</a></li>
+        </ul>
+      </div>
+
+      <div class="span12">
+        <div class="post">
+  <h1><a href="/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html">How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku</a></h1>
+
+<p>As was mentioned in our <a href="http://dev.anideo.com/post/15021361987/how-moving-to-amazon-cloudfront-increased-our-app-store">previous post</a>, we recently started using Amazon Cloudfront for our CDN needs. We wanted the performance benefits that we would gain from the move, we certainly didn&#8217;t want it to come at the cost of speed of deployment.</p>
+
+<p>While the CloudFront custom origin server solution takes care of deployment, there is still the problem of expiring stale assets (especially Javascript and CSS).</p>
+
+<p>As they say, the two toughest problems in Computer Science are caching, naming things and off-by-one errors.</p>
+
+<p><strong>Asset Fingerprinting</strong></p>
+
+<p>The problem of expiring stale content for CDN&#8217;s (and browsers) is solved by <a href="http://guides.rubyonrails.org/asset_pipeline.html#what-is-fingerprinting-and-why-should-i-care">asset fingerprinting</a> as part of Rails 3.1&#8217;s Asset Pipelining feature.</p>
+
+<p>Every file in the app/assets directory in Rails 3.1 is &#8220;compiled&#8221; as part of the <code>rake assets:precompile</code> Rake task and the asset fingerprint is appended to the each file&#8217;s path and copied over to public/. The asset fingerprint is an MD5 digest of the contents of each file - so if a file is changed (for e.g. and image is changed or you change something in your CSS), the MD5 of the asset will change, and hence that particular asset will be &#8216;expired&#8217;.</p>
+
+<p>The blog post that I referenced from the <a href="http://blog.opengovernment.org/2011/02/10/cloudfront-s3-rails-and-jammit-on-apache/">Open Government</a>, uses the SHA of the most recent Git commit as the asset fingerprint. While that is a simple solution, it is quite inefficient. Think about it - any time you make a change to your site - (including model code or a change in a Rake task), your assets will be expired, even though technically the assets haven&#8217;t changed.</p>
+
+<p>We don&#8217;t change our CSS/JS/images that often, but we do make changes to our business logic quite often (and deploy multiple times a day), so this solution won&#8217;t fly and defeats the purpose of the CDN, since content will always be expired.</p>
+
+<p><strong>Asset Fingerprinting without Sprockets</strong></p>
+
+<p>What we came up with is a better solution, which takes a digest of the entire public/ directory under Rails.root. It&#8217;s still less efficient than Sprockets&#8217; asset fingerprinting, since in our solution the fingerprint is a hash of the entire directory and not each file. So even if you make a change to a single file, an unrelated file under the public/ will also be expired even if it hasn&#8217;t changed.</p>
+
+<p>The hash of the public/ directory is stored in a file called <strong>assets.fingerprint</strong> under Rails.root, and is generated like <a href="https://gist.github.com/1554094">this</a>.</p>
+
+<p><script src="https://gist.github.com/1554094.js?file=set_asset_fingerprint.rb"></script></p>
+
+<p>This is a function of a deploy Rake task which performs pre-flight checks such as these before pushing to Heroku.</p>
+
+<p>We define a constant called REVISION which is defined in <code>config/initializers/asset_fingerprint.rb</code> thusly:</p>
+
+<p><code>REVISION = File.read(Rails.root.join(&#8216;assets.fingerprint&#8217;)).strip</code></p>
+
+<p>&#8230;and in application.rb, the assets path is prepended with the hash as part of the path.</p>
+
+<p>We also make sure that we use Rack::Rewrite to rewrite paths to the assets to ignore the hash and that the assets host points to the Amazon CDN.</p>
+
+<p>Our entire application.rb is here for your reference: <a href="https://gist.github.com/1554090"><a href="https://gist.github.com/1554090">https://gist.github.com/1554090</a></a>.</p>
+
+
+  <div id="tweet-button">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="iamclovin">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'anideodevblog'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+      <li><span class="date">30 Dec 2011</span> &mdash; <a href="/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html">How moving to Amazon Cloudfront increased our App Store conversion rate by 250%</a></li>
+    
+  </ul>
+</div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-12521474-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ <title>com.anideo.dev</title>
+ <link href="http://dev.anideo.com/atom.html" rel="self"/>
+ <link href="http://dev.anideo.com/"/>
+ <updated>2012-01-09T17:29:23+08:00</updated>
+ <id>http://dev.anideo.com</id>
+ <author>
+   <name>The Anideo Developer Team</name>
+   <email>dev@anideo.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku</title>
+   <link href="http://dev.anideo.com/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html"/>
+   <updated>2012-01-03T00:00:00+08:00</updated>
+   <id>http://dev.anideo.com/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails</id>
+   <content type="html">&lt;h1&gt;&lt;a href=&quot;/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html&quot;&gt;How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;As was mentioned in our &lt;a href=&quot;http://dev.anideo.com/post/15021361987/how-moving-to-amazon-cloudfront-increased-our-app-store&quot;&gt;previous post&lt;/a&gt;, we recently started using Amazon Cloudfront for our CDN needs. We wanted the performance benefits that we would gain from the move, we certainly didn&amp;#8217;t want it to come at the cost of speed of deployment.&lt;/p&gt;
+
+&lt;p&gt;While the CloudFront custom origin server solution takes care of deployment, there is still the problem of expiring stale assets (especially Javascript and CSS).&lt;/p&gt;
+
+&lt;p&gt;As they say, the two toughest problems in Computer Science are caching, naming things and off-by-one errors.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Asset Fingerprinting&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The problem of expiring stale content for CDN&amp;#8217;s (and browsers) is solved by &lt;a href=&quot;http://guides.rubyonrails.org/asset_pipeline.html#what-is-fingerprinting-and-why-should-i-care&quot;&gt;asset fingerprinting&lt;/a&gt; as part of Rails 3.1&amp;#8217;s Asset Pipelining feature.&lt;/p&gt;
+
+&lt;p&gt;Every file in the app/assets directory in Rails 3.1 is &amp;#8220;compiled&amp;#8221; as part of the &lt;code&gt;rake assets:precompile&lt;/code&gt; Rake task and the asset fingerprint is appended to the each file&amp;#8217;s path and copied over to public/. The asset fingerprint is an MD5 digest of the contents of each file - so if a file is changed (for e.g. and image is changed or you change something in your CSS), the MD5 of the asset will change, and hence that particular asset will be &amp;#8216;expired&amp;#8217;.&lt;/p&gt;
+
+&lt;p&gt;The blog post that I referenced from the &lt;a href=&quot;http://blog.opengovernment.org/2011/02/10/cloudfront-s3-rails-and-jammit-on-apache/&quot;&gt;Open Government&lt;/a&gt;, uses the SHA of the most recent Git commit as the asset fingerprint. While that is a simple solution, it is quite inefficient. Think about it - any time you make a change to your site - (including model code or a change in a Rake task), your assets will be expired, even though technically the assets haven&amp;#8217;t changed.&lt;/p&gt;
+
+&lt;p&gt;We don&amp;#8217;t change our CSS/JS/images that often, but we do make changes to our business logic quite often (and deploy multiple times a day), so this solution won&amp;#8217;t fly and defeats the purpose of the CDN, since content will always be expired.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Asset Fingerprinting without Sprockets&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;What we came up with is a better solution, which takes a digest of the entire public/ directory under Rails.root. It&amp;#8217;s still less efficient than Sprockets&amp;#8217; asset fingerprinting, since in our solution the fingerprint is a hash of the entire directory and not each file. So even if you make a change to a single file, an unrelated file under the public/ will also be expired even if it hasn&amp;#8217;t changed.&lt;/p&gt;
+
+&lt;p&gt;The hash of the public/ directory is stored in a file called &lt;strong&gt;assets.fingerprint&lt;/strong&gt; under Rails.root, and is generated like &lt;a href=&quot;https://gist.github.com/1554094&quot;&gt;this&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;script src=&quot;https://gist.github.com/1554094.js?file=set_asset_fingerprint.rb&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a function of a deploy Rake task which performs pre-flight checks such as these before pushing to Heroku.&lt;/p&gt;
+
+&lt;p&gt;We define a constant called REVISION which is defined in &lt;code&gt;config/initializers/asset_fingerprint.rb&lt;/code&gt; thusly:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;REVISION = File.read(Rails.root.join(&amp;#8216;assets.fingerprint&amp;#8217;)).strip&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;#8230;and in application.rb, the assets path is prepended with the hash as part of the path.&lt;/p&gt;
+
+&lt;p&gt;We also make sure that we use Rack::Rewrite to rewrite paths to the assets to ignore the hash and that the assets host points to the Amazon CDN.&lt;/p&gt;
+
+&lt;p&gt;Our entire application.rb is here for your reference: &lt;a href=&quot;https://gist.github.com/1554090&quot;&gt;&lt;a href=&quot;https://gist.github.com/1554090&quot;&gt;https://gist.github.com/1554090&lt;/a&gt;&lt;/a&gt;.&lt;/p&gt;
+</content>
+   <author>
+     <name>Arun Thampi</name>
+     <uri>http://dev.anideo.com</uri>
+   </author>
+ </entry>
+ 
+ <entry>
+   <title>How moving to Amazon Cloudfront increased our App Store conversion rate by 250%</title>
+   <link href="http://dev.anideo.com/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html"/>
+   <updated>2011-12-30T00:00:00+08:00</updated>
+   <id>http://dev.anideo.com/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store</id>
+   <content type="html">&lt;h1&gt;&lt;a href=&quot;/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html&quot;&gt;How moving to Amazon Cloudfront increased our App Store conversion rate by 250%&lt;/a&gt;&lt;/h1&gt;
+
+p(meta). 30 Dec 2011 - Singapore
+
+&lt;p&gt;So as you may know, we&amp;#8217;ve been working on &lt;a href=&quot;http://bit.ly/densoapp&quot;&gt;Denso&lt;/a&gt; for a while now, and our primary source of marketing (after the initial wave of PR via &lt;a href=&quot;http://facebook.com/saverin&quot;&gt;Eduardo&lt;/a&gt;) has been our website. We post interesting videos once in a while to Hacker News, Reddit, Twitter and Facebook, thus generating inbound traffic.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;http://news.ycombinator.com/item?id=3346674&quot;&gt;Hacker News story&lt;/a&gt; about &lt;a href=&quot;http://getdenso.com/videos/2711806-december-08-2011-ed-gillespie-part-3&quot;&gt;Jon Stewart&amp;#8217;s takedown of scammy iOS games&lt;/a&gt; generated a record number of visits to &lt;a href=&quot;http://getdenso.com&quot;&gt;getdenso.com&lt;/a&gt;, but unfortunately, that number didn&amp;#8217;t correlate well with the App Store downloads for that period. What we noticed was that our site appeared slow (even though New Relic indicated that our website stood up quite well against the onslaught) - and the reason was that our static assets (Javascript and CSS) were taking too long to load and would occasionally even 504.&lt;/p&gt;
+
+&lt;p&gt;This, was obviously, unacceptable.&lt;/p&gt;
+
+&lt;p&gt;We researched a bunch of ways on how we can improve the speed of the site, and naturally Amazon Cloudfront ranked very high among our options. But we needed a way for it not to interfere with our existing deployment strategy (which is git push heroku master). We chanced upon this &lt;a href=&quot;http://blog.opengovernment.org/2011/02/10/cloudfront-s3-rails-and-jammit-on-apache/&quot;&gt;excellent resource&lt;/a&gt; which basically gives a detailed tutorial on setting up a custom origin server on CloudFront. With Heroku, its not as straightforward as the Open Government tutorial makes it out to be - there will be another blog post coming up on the tweaks that we implemented.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Before and After&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;We switched over to our shiny new CDN solution on the 16th of December.&lt;/p&gt;
+
+&lt;p&gt;Before the 16th, our App-Store-downloads-to-web-visits ratio was hovering around &lt;strong&gt;6-8%&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;After the CDN deployment, our App-Store-downloads-to-web-visits ratio is now a healthier &lt;strong&gt;21-28%.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Moral Of the Story&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Obviously the moral of the story is not for everyone to move over to a CDN. A lot of other iOS app downloads are probably not driven by their web cousins, so it won&amp;#8217;t &lt;em&gt;&lt;strong&gt;always &lt;/strong&gt;&lt;/em&gt;make sense for you to optimize web performance.&lt;/p&gt;
+
+&lt;p&gt;Our biggest takeway is - run experiments, follow up on performance, try to find out root causes for weaknesses, and ruthlessly tackle them.&lt;/p&gt;
+</content>
+   <author>
+     <name>Arun Thampi</name>
+     <uri>http://dev.anideo.com</uri>
+   </author>
+ </entry>
+ 
+
+</feed>

@@ -1,0 +1,30 @@
+---
+layout: post
+title: How moving to Amazon Cloudfront increased our App Store conversion rate by 250%
+---
+
+<h1><a href="{{ page.url }}">{{ page.title }}</a></h1>
+
+p(meta). 30 Dec 2011 - Singapore
+
+<p>So as you may know, we&#8217;ve been working on <a href="http://bit.ly/densoapp">Denso</a> for a while now, and our primary source of marketing (after the initial wave of PR via <a href="http://facebook.com/saverin">Eduardo</a>) has been our website. We post interesting videos once in a while to Hacker News, Reddit, Twitter and Facebook, thus generating inbound traffic.</p>
+
+<p>The <a href="http://news.ycombinator.com/item?id=3346674">Hacker News story</a> about <a href="http://getdenso.com/videos/2711806-december-08-2011-ed-gillespie-part-3">Jon Stewart&#8217;s takedown of scammy iOS games</a> generated a record number of visits to <a href="http://getdenso.com">getdenso.com</a>, but unfortunately, that number didn&#8217;t correlate well with the App Store downloads for that period. What we noticed was that our site appeared slow (even though New Relic indicated that our website stood up quite well against the onslaught) - and the reason was that our static assets (Javascript and CSS) were taking too long to load and would occasionally even 504.</p>
+
+<p>This, was obviously, unacceptable.</p>
+
+<p>We researched a bunch of ways on how we can improve the speed of the site, and naturally Amazon Cloudfront ranked very high among our options. But we needed a way for it not to interfere with our existing deployment strategy (which is git push heroku master). We chanced upon this <a href="http://blog.opengovernment.org/2011/02/10/cloudfront-s3-rails-and-jammit-on-apache/">excellent resource</a> which basically gives a detailed tutorial on setting up a custom origin server on CloudFront. With Heroku, its not as straightforward as the Open Government tutorial makes it out to be - there will be another blog post coming up on the tweaks that we implemented.</p>
+
+<p><strong>Before and After</strong></p>
+
+<p>We switched over to our shiny new CDN solution on the 16th of December.</p>
+
+<p>Before the 16th, our App-Store-downloads-to-web-visits ratio was hovering around <strong>6-8%</strong></p>
+
+<p>After the CDN deployment, our App-Store-downloads-to-web-visits ratio is now a healthier <strong>21-28%.</strong></p>
+
+<p><strong>Moral Of the Story</strong></p>
+
+<p>Obviously the moral of the story is not for everyone to move over to a CDN. A lot of other iOS app downloads are probably not driven by their web cousins, so it won&#8217;t <em><strong>always </strong></em>make sense for you to optimize web performance.</p>
+
+<p>Our biggest takeway is - run experiments, follow up on performance, try to find out root causes for weaknesses, and ruthlessly tackle them.</p>

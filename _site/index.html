@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>com.anideo.dev - The Anideo Developers' Blog</title>
+   <meta name="author" content="Arun Thampi" />
+   <link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+   <link href="/css/default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/css/globals.css" media="screen" rel="stylesheet" type="text/css" />
+   <link rel="alternate" type="application/atom+xml" title="McLovin - Atom" href="http://feeds.feedburner.com/anideo-dev" />
+   <meta name="verify-v1" content="H2MobDzY8glD+MCbudtHDX3ln0Q8MZLhA6Qwvyv2AdE=" />
+</head>
+<body>
+
+<div class="container" id="main">
+  <section id="default">
+    <div class="row">
+      <div class="span4" id="about">
+        <h1><a href="/">The Anideo Dev Blog</a></h1>
+        <ul class="sidebar-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives.html">Archives</a></li>
+          <li><a href="mailto:dev@anideo.com?subject=Hey Devs">Contact</a></li>
+          <li><a href="http://feeds.feedburner.com/anideo-dev">Feed</a></li>
+        </ul>
+      </div>
+
+      <div class="span12">
+        
+  <div class="post">
+    <h1><a href="/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html">How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku</a></h1>
+
+<p>As was mentioned in our <a href="http://dev.anideo.com/post/15021361987/how-moving-to-amazon-cloudfront-increased-our-app-store">previous post</a>, we recently started using Amazon Cloudfront for our CDN needs. We wanted the performance benefits that we would gain from the move, we certainly didn&#8217;t want it to come at the cost of speed of deployment.</p>
+
+<p>While the CloudFront custom origin server solution takes care of deployment, there is still the problem of expiring stale assets (especially Javascript and CSS).</p>
+
+<p>As they say, the two toughest problems in Computer Science are caching, naming things and off-by-one errors.</p>
+
+<p><strong>Asset Fingerprinting</strong></p>
+
+<p>The problem of expiring stale content for CDN&#8217;s (and browsers) is solved by <a href="http://guides.rubyonrails.org/asset_pipeline.html#what-is-fingerprinting-and-why-should-i-care">asset fingerprinting</a> as part of Rails 3.1&#8217;s Asset Pipelining feature.</p>
+
+<p>Every file in the app/assets directory in Rails 3.1 is &#8220;compiled&#8221; as part of the <code>rake assets:precompile</code> Rake task and the asset fingerprint is appended to the each file&#8217;s path and copied over to public/. The asset fingerprint is an MD5 digest of the contents of each file - so if a file is changed (for e.g. and image is changed or you change something in your CSS), the MD5 of the asset will change, and hence that particular asset will be &#8216;expired&#8217;.</p>
+
+<p>The blog post that I referenced from the <a href="http://blog.opengovernment.org/2011/02/10/cloudfront-s3-rails-and-jammit-on-apache/">Open Government</a>, uses the SHA of the most recent Git commit as the asset fingerprint. While that is a simple solution, it is quite inefficient. Think about it - any time you make a change to your site - (including model code or a change in a Rake task), your assets will be expired, even though technically the assets haven&#8217;t changed.</p>
+
+<p>We don&#8217;t change our CSS/JS/images that often, but we do make changes to our business logic quite often (and deploy multiple times a day), so this solution won&#8217;t fly and defeats the purpose of the CDN, since content will always be expired.</p>
+
+<p><strong>Asset Fingerprinting without Sprockets</strong></p>
+
+<p>What we came up with is a better solution, which takes a digest of the entire public/ directory under Rails.root. It&#8217;s still less efficient than Sprockets&#8217; asset fingerprinting, since in our solution the fingerprint is a hash of the entire directory and not each file. So even if you make a change to a single file, an unrelated file under the public/ will also be expired even if it hasn&#8217;t changed.</p>
+
+<p>The hash of the public/ directory is stored in a file called <strong>assets.fingerprint</strong> under Rails.root, and is generated like <a href="https://gist.github.com/1554094">this</a>.</p>
+
+<p><script src="https://gist.github.com/1554094.js?file=set_asset_fingerprint.rb"></script></p>
+
+<p>This is a function of a deploy Rake task which performs pre-flight checks such as these before pushing to Heroku.</p>
+
+<p>We define a constant called REVISION which is defined in <code>config/initializers/asset_fingerprint.rb</code> thusly:</p>
+
+<p><code>REVISION = File.read(Rails.root.join(&#8216;assets.fingerprint&#8217;)).strip</code></p>
+
+<p>&#8230;and in application.rb, the assets path is prepended with the hash as part of the path.</p>
+
+<p>We also make sure that we use Rack::Rewrite to rewrite paths to the assets to ignore the hash and that the assets host points to the Amazon CDN.</p>
+
+<p>Our entire application.rb is here for your reference: <a href="https://gist.github.com/1554090"><a href="https://gist.github.com/1554090">https://gist.github.com/1554090</a></a>.</p>
+
+    <div class="signoff">
+      <a href="/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html#disqus_thread">View Comments</a>
+    </div>
+  </div>
+
+  <div class="post">
+    <h1><a href="/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html">How moving to Amazon Cloudfront increased our App Store conversion rate by 250%</a></h1>
+
+p(meta). 30 Dec 2011 - Singapore
+
+<p>So as you may know, we&#8217;ve been working on <a href="http://bit.ly/densoapp">Denso</a> for a while now, and our primary source of marketing (after the initial wave of PR via <a href="http://facebook.com/saverin">Eduardo</a>) has been our website. We post interesting videos once in a while to Hacker News, Reddit, Twitter and Facebook, thus generating inbound traffic.</p>
+
+<p>The <a href="http://news.ycombinator.com/item?id=3346674">Hacker News story</a> about <a href="http://getdenso.com/videos/2711806-december-08-2011-ed-gillespie-part-3">Jon Stewart&#8217;s takedown of scammy iOS games</a> generated a record number of visits to <a href="http://getdenso.com">getdenso.com</a>, but unfortunately, that number didn&#8217;t correlate well with the App Store downloads for that period. What we noticed was that our site appeared slow (even though New Relic indicated that our website stood up quite well against the onslaught) - and the reason was that our static assets (Javascript and CSS) were taking too long to load and would occasionally even 504.</p>
+
+<p>This, was obviously, unacceptable.</p>
+
+<p>We researched a bunch of ways on how we can improve the speed of the site, and naturally Amazon Cloudfront ranked very high among our options. But we needed a way for it not to interfere with our existing deployment strategy (which is git push heroku master). We chanced upon this <a href="http://blog.opengovernment.org/2011/02/10/cloudfront-s3-rails-and-jammit-on-apache/">excellent resource</a> which basically gives a detailed tutorial on setting up a custom origin server on CloudFront. With Heroku, its not as straightforward as the Open Government tutorial makes it out to be - there will be another blog post coming up on the tweaks that we implemented.</p>
+
+<p><strong>Before and After</strong></p>
+
+<p>We switched over to our shiny new CDN solution on the 16th of December.</p>
+
+<p>Before the 16th, our App-Store-downloads-to-web-visits ratio was hovering around <strong>6-8%</strong></p>
+
+<p>After the CDN deployment, our App-Store-downloads-to-web-visits ratio is now a healthier <strong>21-28%.</strong></p>
+
+<p><strong>Moral Of the Story</strong></p>
+
+<p>Obviously the moral of the story is not for everyone to move over to a CDN. A lot of other iOS app downloads are probably not driven by their web cousins, so it won&#8217;t <em><strong>always </strong></em>make sense for you to optimize web performance.</p>
+
+<p>Our biggest takeway is - run experiments, follow up on performance, try to find out root causes for weaknesses, and ruthlessly tackle them.</p>
+
+    <div class="signoff">
+      <a href="/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html#disqus_thread">View Comments</a>
+    </div>
+  </div>
+
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-12521474-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>

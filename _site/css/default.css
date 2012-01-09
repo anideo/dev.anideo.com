@@ -1,0 +1,25 @@
+#main {
+  padding-top: 60px;
+  min-height: 640px;
+}
+
+#default-container {
+  margin: 0 auto;
+}
+
+#about h1 {
+  background: url(/images/anideo-160px.png) 0 0 no-repeat;
+  width: 160px;
+  height: 160px;
+  text-indent: -9999px;
+}
+
+#about h3 {
+  padding-top: 2px;
+  color: #888;
+  font-size: 16px;
+}
+
+#about h3 strong {
+  text-transform: uppercase;
+}

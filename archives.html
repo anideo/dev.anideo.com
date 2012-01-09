@@ -1,0 +1,15 @@
+---
+layout: default
+title: The Anideo Dev Blog Archives
+---
+<h2 id="intro">{{ page.title }}</h2>
+
+<div class="post">
+  <ul class="archives">
+  {% for post in site.posts %}
+    <li>
+      <span class="date">{{ post.date | date: "%b %d, %Y" }}</span> &mdash; <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
