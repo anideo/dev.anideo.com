@@ -22,7 +22,7 @@ title: The Inaugural Anideo Hackathon
 
 <h4>underscore.cocoa</h4>
 
-<p><a href="http://decisivebits.com">Peter</a>'s been making great contributions to the Cocoa BDD community over the last few weeks with Specta as well as Expecta, but his work during the hackathon consisted of porting underscore.js to Cocoa. You can track his progress on GitHub <a href="https://github.com/petejkim/underscore.cocoa">here</a>. I still haven't started doing BDD on Cocoa (in fact I haven't done Cocoa programming in a while) but Peter's set of great tools will enable me to cross the chasm.</p>
+<p><a href="http://decisivebits.com">Peter</a>'s been making great contributions to the Cocoa BDD community over the last few weeks with <a href="https://github.com/petejkim/specta">Specta</a> as well as <a href="https://github.com/petejkim/expecta">Expecta</a>, but his work during the hackathon consisted of porting underscore.js to Cocoa. You can track his progress on GitHub <a href="https://github.com/petejkim/underscore.cocoa">here</a>. I still haven't started doing BDD on Cocoa (in fact I haven't done Cocoa programming in a while) but Peter's set of great tools will enable me to cross the chasm.</p>
 
 <h4>LazyPost</h4>
 

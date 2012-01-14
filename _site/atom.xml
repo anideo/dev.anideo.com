@@ -3,7 +3,7 @@
  <title>com.anideo.dev</title>
  <link href="http://dev.anideo.com/atom.html" rel="self"/>
  <link href="http://dev.anideo.com/"/>
- <updated>2012-01-15T01:32:08+08:00</updated>
+ <updated>2012-01-15T01:35:09+08:00</updated>
  <id>http://dev.anideo.com/</id>
  <author>
    <name>The Anideo Developer Team</name>
@@ -25,7 +25,7 @@
 &lt;h4&gt;KNPathTableViewController&lt;/h4&gt;
 &lt;p&gt;&lt;a href=&quot;http://kentnguyen.com&quot;&gt;Kent&lt;/a&gt; has been taking care of our mobile needs very ably for the last few months and has been generating stellar work week over week. We&amp;#8217;ve all ogled at Path&amp;#8217;s new beautiful interface and Kent took it on himself to do a version of the scrolling clock which appears whenever you scroll down your Path timeline. The result of his work is &lt;a href=&quot;https://github.com/kentnguyen/KNPathTableViewController&quot;&gt;here&lt;/a&gt;, free for anyone to use.&lt;/p&gt;
 &lt;h4&gt;underscore.cocoa&lt;/h4&gt;
-&lt;p&gt;&lt;a href=&quot;http://decisivebits.com&quot;&gt;Peter&lt;/a&gt;&amp;#8216;s been making great contributions to the Cocoa &lt;span class=&quot;caps&quot;&gt;BDD&lt;/span&gt; community over the last few weeks with Specta as well as Expecta, but his work during the hackathon consisted of porting underscore.js to Cocoa. You can track his progress on GitHub &lt;a href=&quot;https://github.com/petejkim/underscore.cocoa&quot;&gt;here&lt;/a&gt;. I still haven&amp;#8217;t started doing &lt;span class=&quot;caps&quot;&gt;BDD&lt;/span&gt; on Cocoa (in fact I haven&amp;#8217;t done Cocoa programming in a while) but Peter&amp;#8217;s set of great tools will enable me to cross the chasm.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://decisivebits.com&quot;&gt;Peter&lt;/a&gt;&amp;#8216;s been making great contributions to the Cocoa &lt;span class=&quot;caps&quot;&gt;BDD&lt;/span&gt; community over the last few weeks with &lt;a href=&quot;https://github.com/petejkim/specta&quot;&gt;Specta&lt;/a&gt; as well as &lt;a href=&quot;https://github.com/petejkim/expecta&quot;&gt;Expecta&lt;/a&gt;, but his work during the hackathon consisted of porting underscore.js to Cocoa. You can track his progress on GitHub &lt;a href=&quot;https://github.com/petejkim/underscore.cocoa&quot;&gt;here&lt;/a&gt;. I still haven&amp;#8217;t started doing &lt;span class=&quot;caps&quot;&gt;BDD&lt;/span&gt; on Cocoa (in fact I haven&amp;#8217;t done Cocoa programming in a while) but Peter&amp;#8217;s set of great tools will enable me to cross the chasm.&lt;/p&gt;
 &lt;h4&gt;LazyPost&lt;/h4&gt;
 &lt;p&gt;This is still a working name but AJ came up with an idea that involves location and postcards. It&amp;#8217;s a nifty little app and we&amp;#8217;ll give you more details once its ready to ship (which is hopefully very soon).&lt;/p&gt;
 &lt;h4&gt;proxee.io&lt;/h4&gt;
