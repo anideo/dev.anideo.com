@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Simple Windowing and Ranking on Postgres &ndash; Or a Behind-The-Scenes look at GitHeroes</title>
+   <meta name="author" content="Anideo Dev" />
+   <link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+   <link href="/css/default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/css/globals.css" media="screen" rel="stylesheet" type="text/css" />
+   <link rel="alternate" type="application/atom+xml" title="McLovin - Atom" href="http://feeds.feedburner.com/anideo-dev" />
+   <meta name="verify-v1" content="H2MobDzY8glD+MCbudtHDX3ln0Q8MZLhA6Qwvyv2AdE=" />
+</head>
+<body>
+
+<div class="container" id="main">
+  <section id="default">
+    <div class="row">
+      <div class="span4" id="about">
+        <h1><a href="/">The Anideo Dev Blog</a></h1>
+        <h2>com.anideo.dev</h2>
+        <h3>The Anideo Dev Blog</h3>
+
+        <ul class="sidebar-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives.html">Archives</a></li>
+          <li><a href="mailto:dev@anideo.com?subject=Hey Devs">Contact</a></li>
+          <li><a href="http://feeds.feedburner.com/anideo-dev">Feed</a></li>
+        </ul>
+      </div>
+
+      <div class="span12">
+        <div class="post">
+  <h1><a href="/2012/01/19/simple-windowing-and-ranking-on-postgres-or-a-behind-the-scenes-look-at-githeroes.html">Simple Windowing and Ranking on Postgres &ndash; Or a Behind-The-Scenes look at GitHeroes</a></h1>
+<p class="meta">19 Jan 2012 &#8211; Singapore</p>
+<p>I&#8217;d written this down a while ago about an app that I thought would be cool &#8211; l33tornot.com. The concept is basically centered around voting for hackers you thought were l33t &#8211; the idea was to be completely harmless and meant out of curiosity as to whom people would vote for.</p>
+<p>But there were complications &#8211; who was eligible? How would you handle duplicates ? How would you avoid election fraud &#8211; authenticating with Twitter, Facebook or something else? Also how do you handle the case where a larger-than-life character overshadows your personal hero based in tiny Singapore?</p>
+<p>These problems put a dampener on my efforts but I was determined not to let this idea pass &#8211; and so on New Years&#8217; Eve (after much thought for the previous two days), I decided to re-incarnate the idea as <a href="http://githero.es">GitHeroes</a>.</p>
+<h2>Premise</h2>
+<p>The premise was simple:</p>
+<ul>
+  <li>Login using GitHub</li>
+  <li>Nominate your personal hero (you could nominate as many as you want)</li>
+  <li>Publicize your nomination so you could get fellow hackers to vote for them</li>
+  <li>Put up a leaderboard so you could see how your hero was doing</li>
+</ul>
+<p>This re-incarnation of the app did away with problems of deciding &#8220;canonical&#8221; objects for hackers being nominated, election fraud and seemed a much more elegant app.</p>
+<h2>Behind The Scenes</h2>
+<p>The app was built using Rails 3.1, CoffeeScript, Twitter Bootstrap, PostgreSQL and is hosted on Heroku. It uses <a href="https://github.com/intridea/omniauth">Omniauth</a> for GitHub OAuth integration (Omniauth by the way is a fantastic library) and with a <a href="http://www.quora.com/What-font-is-used-in-the-Github-logo">little help from Quora</a>, I even found the GitHub font so that I could design a good-enough logo.</p>
+<h3>Ranking using PostgreSQL</h3>
+<p>The most interesting bit for me about GitHeroes is the way the ranking/leaderboard stuff is done. I contemplated using Redis to do ranking, but I am quite wary of introducing dependencies to a Rails stack unless it&#8217;s absolutely necessary.</p>
+<p>Turns out, it <strong>is</strong> unnecessary because Postgres (9.0 and above) provides with you <a href="http://www.postgresql.org/docs/9.1/static/tutorial-window.html">window functions</a> which let you run calculations across a set of rows in a table. You can choose to group similar rows together, but they also work across the entire table.</p>
+<p><strong>Sidenote</strong>: Postgres 9.0 is not available on the shared database plans available on <a href="http://heroku.com">Heroku</a> so you will need to provision your own or upgrade to the paid plans.</p>
+<p>How voting is designed is quite simple, here is the class:</p>
+<script src="https://gist.github.com/1638263.js?file=vote.rb"></script><p>As you may notice, there is a counter-cache for the hero being voted for and the <code>votes_received</code> is incremented on Hero every time a vote is cast.</p>
+<p>The <code>votes_received</code> column is then used as the column to rank while choosing heroes for the leaderboard.</p>
+<p>This is the function used in the <code>Hero</code> class to get the top 20 heroes ranked by votes across all locations:</p>
+<script src="https://gist.github.com/1638263.js?file=global_leaderboard.rb"></script><p>&#8230;and this is the function used to get the top 20 hereoes by votes in a given location:</p>
+<script src="https://gist.github.com/1638263.js?file=leaderboard_by_location.rb"></script><p>Note: You will need to add a descending order index on votes_received, since by default btree indexes on Postgres use the ascending order:</p>
+<p><code>CREATE INDEX desc_votes_recvd_idx on heros(votes_received DESC NULLS LAST);</code></p>
+<p>As you can see from the query plan below, the query is quite efficient and works like a charm: (although I probably should run benchmarks against a larger table)</p>
+<script src="https://gist.github.com/1638263.js?file=query_plan_for_global_leaderboard.sql"></script><h2>Conclusion</h2>
+<p>GitHeroes was a fun little project that took two days to build and got to the front page of <a href="http://news.ycombinator.com/item?id=3415938">Hacker News</a>. But it also gave me a chance to explore some neat Postgres features which will be useful for the other app that we are building &#8211; <a href="http://getdenso.com">Denso</a>.</p>
+
+  <div id="tweet-button">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="iamclovin">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'anideodevblog'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+      <li><span class="date">14 Jan 2012</span> &mdash; <a href="/2012/01/14/the-inaugural-anideo-hackathon.html">The Inaugural Anideo Hackathon</a></li>
+    
+      <li><span class="date">03 Jan 2012</span> &mdash; <a href="/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html">How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku</a></li>
+    
+      <li><span class="date">30 Dec 2011</span> &mdash; <a href="/2011/12/30/how-moving-to-amazon-cloudfront-increased-our-app-store.html">How moving to Amazon Cloudfront increased our App Store conversion rate by 250%</a></li>
+    
+  </ul>
+</div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-12521474-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>
