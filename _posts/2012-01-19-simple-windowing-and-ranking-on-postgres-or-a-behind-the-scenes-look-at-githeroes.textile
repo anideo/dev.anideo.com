@@ -34,9 +34,9 @@ title: Simple Windowing and Ranking on Postgres &ndash; Or a Behind-The-Scenes l
 
 <p>The most interesting bit for me about GitHeroes is the way the ranking/leaderboard stuff is done. I contemplated using Redis to do ranking, but I am quite wary of introducing dependencies to a Rails stack unless it's absolutely necessary.</p>
 
-<p>Turns out, it *is* unnecessary because Postgres (9.0 and above) provides with you <a href="http://www.postgresql.org/docs/9.1/static/tutorial-window.html">window functions</a> which let you run calculations across a set of rows in a table. You can choose to group similar rows together, but they also work across the entire table.</p>
+<p>Turns out, it *is* unnecessary because Postgres (8.4 and above) provides with you <a href="http://www.postgresql.org/docs/9.1/static/tutorial-window.html">window functions</a> which let you run calculations across a set of rows in a table. You can choose to group similar rows together, but they also work across the entire table.</p>
 
-<p>*Sidenote*: Postgres 9.0 is not available on the shared database plans available on <a href="http://heroku.com">Heroku</a> so you will need to provision your own or upgrade to the paid plans.</p>
+<p>*Sidenote*: Postgres 8.4 is not available on the shared database plans available on <a href="http://heroku.com">Heroku</a> so you will need to provision your own or upgrade to the paid plans.</p>
 
 <p>How voting is designed is quite simple, here is the class:</p>
 

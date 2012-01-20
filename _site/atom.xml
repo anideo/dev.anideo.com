@@ -3,7 +3,7 @@
  <title>com.anideo.dev</title>
  <link href="http://dev.anideo.com/atom.html" rel="self"/>
  <link href="http://dev.anideo.com/"/>
- <updated>2012-01-19T15:12:06+08:00</updated>
+ <updated>2012-01-20T08:03:37+08:00</updated>
  <id>http://dev.anideo.com/</id>
  <author>
    <name>The Anideo Developer Team</name>
@@ -34,8 +34,8 @@
 &lt;p&gt;The app was built using Rails 3.1, CoffeeScript, Twitter Bootstrap, PostgreSQL and is hosted on Heroku. It uses &lt;a href=&quot;https://github.com/intridea/omniauth&quot;&gt;Omniauth&lt;/a&gt; for GitHub OAuth integration (Omniauth by the way is a fantastic library) and with a &lt;a href=&quot;http://www.quora.com/What-font-is-used-in-the-Github-logo&quot;&gt;little help from Quora&lt;/a&gt;, I even found the GitHub font so that I could design a good-enough logo.&lt;/p&gt;
 &lt;h3&gt;Ranking using PostgreSQL&lt;/h3&gt;
 &lt;p&gt;The most interesting bit for me about GitHeroes is the way the ranking/leaderboard stuff is done. I contemplated using Redis to do ranking, but I am quite wary of introducing dependencies to a Rails stack unless it&amp;#8217;s absolutely necessary.&lt;/p&gt;
-&lt;p&gt;Turns out, it &lt;strong&gt;is&lt;/strong&gt; unnecessary because Postgres (9.0 and above) provides with you &lt;a href=&quot;http://www.postgresql.org/docs/9.1/static/tutorial-window.html&quot;&gt;window functions&lt;/a&gt; which let you run calculations across a set of rows in a table. You can choose to group similar rows together, but they also work across the entire table.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Sidenote&lt;/strong&gt;: Postgres 9.0 is not available on the shared database plans available on &lt;a href=&quot;http://heroku.com&quot;&gt;Heroku&lt;/a&gt; so you will need to provision your own or upgrade to the paid plans.&lt;/p&gt;
+&lt;p&gt;Turns out, it &lt;strong&gt;is&lt;/strong&gt; unnecessary because Postgres (8.4 and above) provides with you &lt;a href=&quot;http://www.postgresql.org/docs/9.1/static/tutorial-window.html&quot;&gt;window functions&lt;/a&gt; which let you run calculations across a set of rows in a table. You can choose to group similar rows together, but they also work across the entire table.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Sidenote&lt;/strong&gt;: Postgres 8.4 is not available on the shared database plans available on &lt;a href=&quot;http://heroku.com&quot;&gt;Heroku&lt;/a&gt; so you will need to provision your own or upgrade to the paid plans.&lt;/p&gt;
 &lt;p&gt;How voting is designed is quite simple, here is the class:&lt;/p&gt;
 &lt;script src=&quot;https://gist.github.com/1638263.js?file=vote.rb&quot;&gt;&lt;/script&gt;&lt;p&gt;As you may notice, there is a counter-cache for the hero being voted for and the &lt;code&gt;votes_received&lt;/code&gt; is incremented on Hero every time a vote is cast.&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;votes_received&lt;/code&gt; column is then used as the column to rank while choosing heroes for the leaderboard.&lt;/p&gt;
