@@ -3,13 +3,40 @@
  <title>com.anideo.dev</title>
  <link href="http://dev.anideo.com/atom.html" rel="self"/>
  <link href="http://dev.anideo.com/"/>
- <updated>2012-01-20T08:03:37+08:00</updated>
+ <updated>2012-02-27T23:58:25+08:00</updated>
  <id>http://dev.anideo.com/</id>
  <author>
    <name>The Anideo Developer Team</name>
    <email>dev@anideo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Introducing Journey &ndash; The Unofficial Path Client for OS X</title>
+   <link href="http://dev.anideo.com/2012/02/26/introducing-journey-the-unofficial-path-client-for-os-x.html"/>
+   <updated>2012-02-26T00:00:00+08:00</updated>
+   <id>http://dev.anideo.com/2012/02/26/introducing-journey-the-unofficial-path-client-for-os-x</id>
+   <content type="html">&lt;h1&gt;&lt;a href=&quot;/2012/02/26/introducing-journey-the-unofficial-path-client-for-os-x.html&quot;&gt;Introducing Journey &amp;ndash; The Unofficial Path Client for OS X&lt;/a&gt;&lt;/h1&gt;
+&lt;p class=&quot;meta&quot;&gt;26 Feb 2012 &amp;#8211; Singapore&lt;/p&gt;
+&lt;p&gt;As previously &lt;a href=&quot;http://mclov.in/2012/02/08/path-uploads-your-entire-address-book-to-their-servers.html&quot;&gt;mentioned&lt;/a&gt;, we wanted to make an unofficial Path client for OS X, which unfortunately created an Internet &lt;a href=&quot;http://www.techmeme.com/120207/p43#a120207p43&quot;&gt;ragestorm&lt;/a&gt;. Putting distractions aside, we got to work during our second Anideo hackathon and after spending approximately 48 hours in total (this was a side project), we are happy to announce that &lt;a href=&quot;http://journeyformac.com&quot;&gt;Journey&lt;/a&gt;, the unofficial Path Reader for OS X is available for &lt;a href=&quot;https://github.com/downloads/JourneyForMac/Journey/Journey%200.1.0.dmg&quot;&gt;download&lt;/a&gt;. The code is also available under an &lt;span class=&quot;caps&quot;&gt;MIT&lt;/span&gt; license on &lt;a href=&quot;http://github.com/JourneyForMac/Journey&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As much as we love &lt;a href=&quot;http://path.com&quot;&gt;Path&lt;/a&gt;, the rationale behind open-sourcing Journey is that we felt we couldn&amp;#8217;t commit enough man-hours to ensure the continued quality of the project, so we are experimenting with making Journey a community-driven Mac application.&lt;/p&gt;
+&lt;h3&gt;Back Story&lt;/h3&gt;
+&lt;p&gt;This project was the result of the cumulative efforts of &lt;a href=&quot;http://twitter.com/raingrove&quot;&gt;Peter&lt;/a&gt; (who runs &lt;a href=&quot;http://decisivebits.com&quot;&gt;Decisive Bits&lt;/a&gt; &amp;#8211; an HTML5/iOS/Android consultancy based in Singapore), &lt;a href=&quot;http://twitter.com/ntluan&quot;&gt;Kent&lt;/a&gt;, &lt;a href=&quot;http://twitter.com/ajhit406&quot;&gt;AJ&lt;/a&gt; and &lt;a href=&quot;http://twitter.com/iamclovin&quot;&gt;myself&lt;/a&gt; (who all work on &lt;a href=&quot;http://getdenso.com&quot;&gt;Denso&lt;/a&gt; as part of our day jobs). We spent two all-nighters, a few sessions of pair-programming (sometimes even over iChat) and plenty of Red Bull and coffee.&lt;/p&gt;
+&lt;p&gt;We wanted the first version to be simple, since as &lt;a href=&quot;http://facebook.com/zuck&quot;&gt;Brother Mark&lt;/a&gt; says, &amp;#8220;Stay Focused &amp;amp; Keep Shipping&amp;#8221;. Hence we agreed very early on that the first version would be a &amp;#8220;read-only&amp;#8221; Path client, i.e. you can only read status updates and view pictures, but wouldn&amp;#8217;t be able to post anything to Path. With that out of the way, we spent the first few hours discussing architecture, and decided that we&amp;#8217;d use web views (with &lt;span class=&quot;caps&quot;&gt;HTML&lt;/span&gt;/&lt;span class=&quot;caps&quot;&gt;CSS&lt;/span&gt; and Javascript) to power the views and ASIHTTPRequest as the &lt;span class=&quot;caps&quot;&gt;HTTP&lt;/span&gt; client.&lt;/p&gt;
+&lt;p&gt;
+&lt;p&gt;&lt;img src=&quot;https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/426414_10100230247154651_4_43369285_2050701101_n.jpg&quot; alt=&quot;Stay Focused &amp; Keep Shipping&quot; width=&quot;600&quot;/&gt;&lt;/p&gt;
+&lt;/p&gt;
+&lt;p&gt;(source: &lt;a href=&quot;http://facebook.com/zuck&quot;&gt;Mark Zuckerberg&amp;#8217;s Facebook&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;We also decided to test drive as much of the code as possible, and so we used Peter&amp;#8217;s awesome &lt;a href=&quot;http://github.com/petejkim/Specta&quot;&gt;Specta&lt;/a&gt; and &lt;a href=&quot;http://github.com/petejkim/Expecta&quot;&gt;Expecta&lt;/a&gt; libraries to do so. Kent and I were quite new to &lt;span class=&quot;caps&quot;&gt;TDD&lt;/span&gt; on Cocoa, so pair-programming with Pete definitely helped to get us on track.&lt;/p&gt;
+&lt;p&gt;We used the wonderful &lt;a href=&quot;http://glyphicons&quot;&gt;glyphicons&lt;/a&gt; library for all the icons on the app, and hand-coded all the &lt;span class=&quot;caps&quot;&gt;HTML&lt;/span&gt; and &lt;span class=&quot;caps&quot;&gt;CSS&lt;/span&gt;, to make it look as close as possible to the Path iOS app.&lt;/p&gt;
+&lt;h3&gt;Future Plans&lt;/h3&gt;
+&lt;p&gt;There are some features missing (even for a reader), but this is our &lt;span class=&quot;caps&quot;&gt;MVP&lt;/span&gt; and depending on the feedback that we receive from users, we&amp;#8217;d like to work on it more. Even better, submit an issue and a pull request, and we&amp;#8217;ll gladly merge your changes!&lt;/p&gt;
+&lt;p&gt;We had a lot of fun making this app, and we want to continue building and shipping good software, and we hope this is just one in a series of many high-quality apps.&lt;/p&gt;</content>
+   <author>
+     <name>Devs at Anideo</name>
+     <uri>http://dev.anideo.com/</uri>
+   </author>
+ </entry>
  
  <entry>
    <title>Simple Windowing and Ranking on Postgres &ndash; Or a Behind-The-Scenes look at GitHeroes</title>

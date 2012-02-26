@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Introducing Journey &ndash; The Unofficial Path Client for OS X</title>
+   <meta name="author" content="Anideo Dev" />
+   <link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+   <link href="/css/default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/css/globals.css" media="screen" rel="stylesheet" type="text/css" />
+   <link rel="alternate" type="application/atom+xml" title="McLovin - Atom" href="http://feeds.feedburner.com/anideo-dev" />
+   <meta name="verify-v1" content="H2MobDzY8glD+MCbudtHDX3ln0Q8MZLhA6Qwvyv2AdE=" />
+</head>
+<body>
+
+<div class="container" id="main">
+  <section id="default">
+    <div class="row">
+      <div class="span4" id="about">
+        <h1><a href="/">The Anideo Dev Blog</a></h1>
+        <h2>com.anideo.dev</h2>
+        <h3>The Anideo Dev Blog</h3>
+        <h4>We are building <a href="http://getdenso.com">Denso</a>.</h4>
+
+        <ul class="sidebar-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives.html">Archives</a></li>
+          <li><a href="mailto:dev@anideo.com?subject=Hey Devs">Contact</a></li>
+          <li><a href="http://feeds.feedburner.com/anideo-dev">Feed</a></li>
+        </ul>
+      </div>
+
+      <div class="span12">
+        <div class="post">
+  <h1><a href="/2012/02/26/introducing-journey-the-unofficial-path-client-for-os-x.html">Introducing Journey &ndash; The Unofficial Path Client for OS X</a></h1>
+<p class="meta">26 Feb 2012 &#8211; Singapore</p>
+<p>As previously <a href="http://mclov.in/2012/02/08/path-uploads-your-entire-address-book-to-their-servers.html">mentioned</a>, we wanted to make an unofficial Path client for OS X, which unfortunately created an Internet <a href="http://www.techmeme.com/120207/p43#a120207p43">ragestorm</a>. Putting distractions aside, we got to work during our second Anideo hackathon and after spending approximately 48 hours in total (this was a side project), we are happy to announce that <a href="http://journeyformac.com">Journey</a>, the unofficial Path Reader for OS X is available for <a href="https://github.com/downloads/JourneyForMac/Journey/Journey%200.1.0.dmg">download</a>. The code is also available under an <span class="caps">MIT</span> license on <a href="http://github.com/JourneyForMac/Journey">GitHub</a>.</p>
+<p>As much as we love <a href="http://path.com">Path</a>, the rationale behind open-sourcing Journey is that we felt we couldn&#8217;t commit enough man-hours to ensure the continued quality of the project, so we are experimenting with making Journey a community-driven Mac application.</p>
+<h3>Back Story</h3>
+<p>This project was the result of the cumulative efforts of <a href="http://twitter.com/raingrove">Peter</a> (who runs <a href="http://decisivebits.com">Decisive Bits</a> &#8211; an HTML5/iOS/Android consultancy based in Singapore), <a href="http://twitter.com/ntluan">Kent</a>, <a href="http://twitter.com/ajhit406">AJ</a> and <a href="http://twitter.com/iamclovin">myself</a> (who all work on <a href="http://getdenso.com">Denso</a> as part of our day jobs). We spent two all-nighters, a few sessions of pair-programming (sometimes even over iChat) and plenty of Red Bull and coffee.</p>
+<p>We wanted the first version to be simple, since as <a href="http://facebook.com/zuck">Brother Mark</a> says, &#8220;Stay Focused &amp; Keep Shipping&#8221;. Hence we agreed very early on that the first version would be a &#8220;read-only&#8221; Path client, i.e. you can only read status updates and view pictures, but wouldn&#8217;t be able to post anything to Path. With that out of the way, we spent the first few hours discussing architecture, and decided that we&#8217;d use web views (with <span class="caps">HTML</span>/<span class="caps">CSS</span> and Javascript) to power the views and ASIHTTPRequest as the <span class="caps">HTTP</span> client.</p>
+<p>
+<p><img src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/426414_10100230247154651_4_43369285_2050701101_n.jpg" alt="Stay Focused & Keep Shipping" width="600"/></p>
+</p>
+<p>(source: <a href="http://facebook.com/zuck">Mark Zuckerberg&#8217;s Facebook</a>)</p>
+<p>We also decided to test drive as much of the code as possible, and so we used Peter&#8217;s awesome <a href="http://github.com/petejkim/Specta">Specta</a> and <a href="http://github.com/petejkim/Expecta">Expecta</a> libraries to do so. Kent and I were quite new to <span class="caps">TDD</span> on Cocoa, so pair-programming with Pete definitely helped to get us on track.</p>
+<p>We used the wonderful <a href="http://glyphicons">glyphicons</a> library for all the icons on the app, and hand-coded all the <span class="caps">HTML</span> and <span class="caps">CSS</span>, to make it look as close as possible to the Path iOS app.</p>
+<h3>Future Plans</h3>
+<p>There are some features missing (even for a reader), but this is our <span class="caps">MVP</span> and depending on the feedback that we receive from users, we&#8217;d like to work on it more. Even better, submit an issue and a pull request, and we&#8217;ll gladly merge your changes!</p>
+<p>We had a lot of fun making this app, and we want to continue building and shipping good software, and we hope this is just one in a series of many high-quality apps.</p>
+
+  <div id="tweet-button">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="iamclovin">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  </div>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'anideodevblog'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
+    
+      <li><span class="date">19 Jan 2012</span> &mdash; <a href="/2012/01/19/simple-windowing-and-ranking-on-postgres-or-a-behind-the-scenes-look-at-githeroes.html">Simple Windowing and Ranking on Postgres &ndash; Or a Behind-The-Scenes look at GitHeroes</a></li>
+    
+      <li><span class="date">14 Jan 2012</span> &mdash; <a href="/2012/01/14/the-inaugural-anideo-hackathon.html">The Inaugural Anideo Hackathon</a></li>
+    
+      <li><span class="date">03 Jan 2012</span> &mdash; <a href="/2012/01/03/how-we-setup-amazon-cloudfront-to-play-nice-with-rails.html">How we setup Amazon Cloudfront to play nice with Rails 3.0.x on Heroku</a></li>
+    
+  </ul>
+</div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-12521474-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>
